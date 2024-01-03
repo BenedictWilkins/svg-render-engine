@@ -1,4 +1,4 @@
-from .engine import PygameSVGEngine
+from .view import PygameView
 from .event import _EventFactory
 
-__all__ = ("PygameSVGEngine",)
+__all__ = ("PygameView",)

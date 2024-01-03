@@ -1,5 +1,6 @@
 """ Module defining the MouseButtonEvent and MouseMotionEvent classes. """
 
+from typing import List
 from dataclasses import dataclass
 from .event import Event  # Assuming Event is defined in the 'event' module
 
@@ -22,6 +23,7 @@ class MouseButtonEvent:
     button: int
     position: tuple
     status: str
+    # element: List[str] # element (List[str]): A list of svg elements ('id' tag) that are under the mouse pointer.
 
 
 @dataclass

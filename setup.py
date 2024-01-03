@@ -10,7 +10,8 @@ setup(
     long_description_content_type="text/markdown",
     packages=find_packages(),
     install_requires=[
-        "uuid"
+        "uuid",
+        "cairosvg",
         # List your package dependencies here
         # e.g., 'numpy', 'Pillow'
     ],

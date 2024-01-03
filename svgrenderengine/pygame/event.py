@@ -47,6 +47,7 @@ class _EventFactory:
 
         Args:
             pg_event (pygame.Event): The Pygame event from which to create the MouseEvent.
+            clickable_elements (List[xml.Element]): A list of clickable elements in the SVG.
 
         Returns:
             MouseEvent: A new instance of MouseEvent initialized with the Pygame event data.
