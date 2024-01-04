@@ -5,9 +5,14 @@ from ..event import QueryEvent, ResponseEvent, Event
 
 
 class SVGApplication:
-    def __init__(self, file):
-        with open(file, "r") as svg_file:
-            svg_code = Template(svg_file.read()).render()
+    def __init__(self, file=None, svg_code=None):
+        if file:
+            with open(file, "r") as svg_file:
+                svg_code = Template(svg_file.read()).render()
+        elif svg_code:
+            svg_code = Template(svg_code).render()
+        else:
+            raise ValueError("Argument `file` or `svg_code` must be specified.")
         self.element_tree_root = ET.fromstring(svg_code)
 
     def query(self, query_event: QueryEvent):
@@ -33,19 +38,26 @@ class SVGApplication:
         """
         # Initialize a ResponseEvent
         response = ResponseEvent(
-            event=Event.create_new_event(),
+            event=Event.create_event(),
             query_event_id=query_event.event.id,
             success=False,
             data=None,
         )
 
-        # Find the SVG element by ID
-        svg_element = root.find(f".//*[@id='{query_event.element_id}']")
+        # Check if the root itself is the element to be selected
+        if root.get("id", None) == query_event.element_id:
+            svg_element = root
+        else:
+            # Find the SVG element by ID among the children
+            svg_elements = root.xpath(f".//*[@id='{query_event.element_id}']")
+            svg_element = svg_elements[0] if svg_elements else None
 
         # Check if the element exists
         if svg_element is None:
             # print(f"No element found with ID {query_event.element_id}")
             return response
+
+        svg_element = svg_elements[0]
 
         # Update the attributes of the found element
         for attr, value in query_event.attributes.items():
@@ -68,20 +80,26 @@ class SVGApplication:
             ResponseEvent: The response event indicating the outcome of the delete operation.
         """
         response = ResponseEvent(
-            event=Event.create_new_event(),
+            event=Event.create_event(),
             query_event_id=query_event.event.id,
             success=False,
             data=None,
         )
 
-        # Find the SVG element by ID
-        svg_element = root.find(f".//*[@id='{query_event.element_id}']")
+        # Check if the root itself is the element to be selected
+        if root.get("id", None) == query_event.element_id:
+            svg_element = root
+        else:
+            # Find the SVG element by ID among the children
+            svg_elements = root.xpath(f".//*[@id='{query_event.element_id}']")
+            svg_element = svg_elements[0] if svg_elements else None
 
         # Check if the element exists
         if svg_element is None:
             # print(f"No element found with ID {query_event.element_id}")
             return response
 
+        svg_element = svg_elements[0]
         # Remove the element
         parent = svg_element.getparent()
         if parent is not None:
@@ -103,24 +121,29 @@ class SVGApplication:
             ResponseEvent: The response event containing the selected attribute values or the element representation.
         """
         response = ResponseEvent(
-            event=Event.create_new_event(),
+            event=Event.create_event(),
             query_event_id=query_event.event.id,
             success=False,
             data=None,
         )
 
-        # Find the SVG element by ID
-        svg_element = root.find(f".//*[@id='{query_event.element_id}']")
+        # Check if the root itself is the element to be selected
+        if root.get("id", None) == query_event.element_id:
+            svg_element = root
+        else:
+            # Find the SVG element by ID among the children
+            svg_elements = root.xpath(f".//*[@id='{query_event.element_id}']")
+            svg_element = svg_elements[0] if svg_elements else None
 
         # Check if the element exists
         if svg_element is None:
-            print(f"No element found with ID {query_event.element_id}")
+            # print(f"No element found with ID {query_event.element_id}")
             return response
 
         if query_event.attributes:
             # Select and convert the specified attributes
             selected_data = {
-                attr: convert_attribute_value(svg_element.get(attr))
+                attr: convert_attribute_value(svg_element.get(attr, None))
                 for attr in query_event.attributes
             }
         else:
@@ -129,6 +152,16 @@ class SVGApplication:
                 key: convert_attribute_value(value)
                 for key, value in svg_element.attrib.items()
             }
+
+        # get inner xml for this element if it is a container
+        if list(svg_element) and "_inner_xml" in query_event.attributes:
+            selected_data["_inner_xml"] = "".join(
+                ET.tostring(child, encoding="unicode") for child in svg_element
+            )
+
+        # get the full xml for this element
+        if "_xml" in query_event.attributes:
+            selected_data["_xml"] = ET.tostring(svg_element, encoding="unicode")
 
         response.data = selected_data
         response.success = True

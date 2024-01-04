@@ -1,4 +1,4 @@
-<svg width="200" height="320" xmlns="http://www.w3.org/2000/svg" xmlns:svgre="svg_render_engine">
+<svg id="root" width="200" height="320" xmlns="http://www.w3.org/2000/svg" xmlns:svgre="svg_render_engine">
     <!-- Background rectangle -->
     <rect width="200" height="320" fill="#f5f5f5" />
 

@@ -20,27 +20,44 @@ if __name__ == "__main__":
     running = True
     while running:
         for event in game.step():
+            result = app.query(
+                QueryEvent(Event.create_event(), QueryEvent.SELECT, "root", ["_xml"])
+            )
+            # print(result)
+
             if isinstance(event, MouseButtonEvent) and event.status == "pressed":
                 elements = find_all_clickable_elements_at(
                     app.element_tree_root, event.position
                 )
                 for elem in elements:
                     element_id = elem.get("id")
+                    # Test Update
                     # result = app.query(
                     #     QueryEvent(
-                    #         Event.create_new_event(),
+                    #         Event.create_event(),
                     #         QueryEvent.UPDATE,
                     #         element_id,
                     #         dict(fill=get_random_color()),
                     #     )
                     # )
 
+                    # Test DELETE
+                    # result = app.query(
+                    #     QueryEvent(
+                    #         Event.create_event(),
+                    #         QueryEvent.DELETE,
+                    #         element_id,
+                    #         None,
+                    #     )
+                    # )
+
+                    # Test SELECT
                     result = app.query(
                         QueryEvent(
-                            Event.create_new_event(),
-                            QueryEvent.DELETE,
+                            Event.create_event(),
+                            QueryEvent.SELECT,
                             element_id,
-                            None,
+                            ["id", "fill", "abc"],
                         )
                     )
 

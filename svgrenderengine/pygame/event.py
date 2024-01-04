@@ -18,7 +18,7 @@ class _EventFactory:
     @staticmethod
     def create_exit_event_from_pygame_event(pg_event):
         assert pg_event.type == pygame.QUIT
-        return ExitEvent(Event.create_new_event())
+        return ExitEvent(Event.create_event())
 
     @staticmethod
     def create_key_event_from_pygame_event(pg_event):
@@ -40,7 +40,7 @@ class _EventFactory:
 
         status = KEY_PRESSED if pg_event.type == PYGAME_KEYDOWN else KEY_RELEASED
         return KeyEvent(
-            event=Event.create_new_event(),
+            event=Event.create_event(),
             key=pg_event.key,
             key_name=pygame.key.name(pg_event.key),
             status=status,
@@ -68,7 +68,7 @@ class _EventFactory:
 
         status = "pressed" if pg_event.type == pygame.MOUSEBUTTONDOWN else "released"
         return MouseButtonEvent(
-            event=Event.create_new_event(),
+            event=Event.create_event(),
             button=pg_event.button,
             position=pg_event.pos,
             status=status,
@@ -92,5 +92,5 @@ class _EventFactory:
             raise ValueError("The provided Pygame event is not a MOUSEMOTION event.")
 
         return MouseMotionEvent(
-            event=Event.create_new_event(), position=pg_event.pos, relative=pg_event.rel
+            event=Event.create_event(), position=pg_event.pos, relative=pg_event.rel
         )

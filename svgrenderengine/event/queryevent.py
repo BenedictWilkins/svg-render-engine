@@ -30,4 +30,4 @@ class QueryEvent:
     event: Event
     action: str
     element_id: str
-    attributes: dict
+    attributes: dict | list

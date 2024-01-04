@@ -17,7 +17,7 @@ class Event:
     timestamp: float
 
     @staticmethod
-    def create_new_event():
+    def create_event():
         """Creates a new instance of Event with a unique UUID as its ID and a current UNIX timestamp.
 
         This method generates a UUID4, converts it to a string, and gets the current UNIX time (in seconds) to be used as the event's ID and timestamp respectively.
