@@ -12,8 +12,8 @@ setup(
     install_requires=[
         "uuid",
         "cairosvg",
-        # List your package dependencies here
-        # e.g., 'numpy', 'Pillow'
+        "jinja2",
+        "lxml",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

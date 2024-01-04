@@ -5,9 +5,10 @@
     <g font-family="Arial" font-size="12" >
 
     <!-- Top rectangles -->
-    <rect x="10"  y="10" width="80" height="40" fill="#f5f5f5" stroke="black" stroke-width="1" svgre:clickable="true"/>
+    <rect id="warning-light-1" x="10"  y="10" width="80" height="40" fill="#f5f5f5" stroke="black" stroke-width="1" svgre:clickable="true"/>
     <text x="40"  y="35" fill="#0500d6" stroke="#0500d6">F5</text>
-    <rect x="110" y="10" width="80" height="40" fill="#f5f5f5" stroke="black" stroke-width="1" svgre:clickable="true"/>
+    
+    <rect id="warning-light-2" x="110" y="10" width="80" height="40" fill="#f5f5f5" stroke="black" stroke-width="1" svgre:clickable="true"/>
     <text x="140"  y="35"  fill="#0500d6" stroke="#0500d6">F6</text>
 
         <!-- Segment dividers for vertical rectangles -->    
@@ -15,10 +16,10 @@
 
             {% for j in range(0, 4)  %}
                 <!-- Vertical rectangle -->
-                <rect x="{{ 10 + j * 50 }}" y="70" width="30" height="220" fill="#add9e6" svgre:clickable="true"/>
+                <rect id="slider-{{j}}" x="{{ 10 + j * 50 }}" y="70" width="30" height="220" fill="#add9e6" svgre:clickable="true"/>
 
                 <!-- Moveable rect for Vertical rectangle-->
-                <rect x="{{ 10 + j * 50 }}" y="150" width="30" height="60" fill="#4683b2"/>
+                <rect id="slider-box-{{j}}" x="{{ 10 + j * 50 }}" y="150" width="30" height="60" fill="#4683b2"/>
 
                 <!-- Dividers for Vertical rectangle -->
                 {% for i in range(1, 12) %}

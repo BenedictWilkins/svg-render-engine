@@ -1,10 +1,12 @@
 if __name__ == "__main__":
     from svgrenderengine.pygame import PygameView
-    from svgrenderengine.event import MouseButtonEvent, ExitEvent
+    from svgrenderengine.event import MouseButtonEvent, ExitEvent, QueryEvent, Event
     from svgrenderengine.engine.query import find_all_clickable_elements_at
+    from svgrenderengine.engine import SVGApplication
+
     from jinja2 import Template
 
-    import xml.etree.ElementTree as ET
+    from lxml import etree as ET
     import random
 
     def get_random_color():
@@ -12,29 +14,39 @@ if __name__ == "__main__":
         color_hex = f"#{color_int:06x}"
         return color_hex
 
-    ENGINE_NAMESPACE = 'xmlns:svgre="svg_render_engine"'
-
-    with open("./test/matb2.svg", "r") as svg_file:
-        svg_code = Template(svg_file.read()).render()
-
-    element_tree_root = ET.fromstring(svg_code)
-    width = int(element_tree_root.get("width"))
-    height = int(element_tree_root.get("height"))
-    print(width, height)
-
-    game = PygameView(width=width, height=height)
+    app = SVGApplication("./test/matb2.svg")
+    game = PygameView(width=app.width, height=app.height)
     # run the simulation loop
     running = True
     while running:
         for event in game.step():
             if isinstance(event, MouseButtonEvent) and event.status == "pressed":
                 elements = find_all_clickable_elements_at(
-                    element_tree_root, event.position
+                    app.element_tree_root, event.position
                 )
-                print(event, elements)
                 for elem in elements:
-                    elem.set("fill", get_random_color())
+                    element_id = elem.get("id")
+                    # result = app.query(
+                    #     QueryEvent(
+                    #         Event.create_new_event(),
+                    #         QueryEvent.UPDATE,
+                    #         element_id,
+                    #         dict(fill=get_random_color()),
+                    #     )
+                    # )
+
+                    result = app.query(
+                        QueryEvent(
+                            Event.create_new_event(),
+                            QueryEvent.DELETE,
+                            element_id,
+                            None,
+                        )
+                    )
+
+                    print(result)
+
             elif isinstance(event, ExitEvent):
                 running = False
-        game.render_svg(ET.tostring(element_tree_root, encoding="unicode"))
+        game.render_svg(ET.tostring(app.element_tree_root, encoding="unicode"))
     game.close()

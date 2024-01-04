@@ -1,15 +1,22 @@
-from ..pygame import PygameView
+from .query import *
+from .app import SVGApplication
+
+ENGINE_NAMESPACE = 'xmlns:svgre="svg_render_engine"'
 
 
-from .query import find_all_clickable_elements
+def load_svg_as_element_tree(file):
+    with open(file, "r") as svg_file:
+        svg_code = svg_file.read()
+        return resolve_templated_svg_as_element_tree(svg_code)
 
 
-class SVGRenderEngine:
-    def __init__(self, svg):
-        self.state = svg  # we could translate it first?
-        self._view = PygameView(
-            # event_callback=self.svg_event_callback
-        )  # by default (TODO change)
+def resolve_templated_svg_as_element_tree(svg_code):
+    from jinja2 import Template
+    import xml.etree.ElementTree as ET
 
-    def run(self):
-        self._view.run()
+    svg_code = Template(svg_code).render()
+    element_tree_root = ET.fromstring(svg_code)
+    width = int(element_tree_root.get("width"))
+    height = int(element_tree_root.get("height"))
+
+    return element_tree_root, dict(width=width, height=height)
