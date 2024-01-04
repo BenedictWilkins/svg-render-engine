@@ -1,19 +1,6 @@
 import xml.etree.ElementTree as ET
 
-
-def find_all_clickable_elements(element_tree_root):
-    # Define the namespace for 'svgre'
-    namespaces = {"svgre": "svg_render_engine"}
-    # Find all elements with the 'svgre:clickable' attribute
-    clickable_elements = element_tree_root.findall(
-        ".//*[@svgre:clickable='true']", namespaces
-    )
-    clickable_elements = [
-        clickable
-        for clickable in clickable_elements
-        if clickable.attrib.get("{svg_render_engine}clickable") == "true"
-    ]
-    return clickable_elements
+from svgrenderengine.engine.query import find_all_clickable_elements
 
 
 # Example SVG code

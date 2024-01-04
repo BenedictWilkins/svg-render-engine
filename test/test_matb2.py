@@ -2,6 +2,7 @@ if __name__ == "__main__":
     from svgrenderengine.pygame import PygameView
     from svgrenderengine.event import MouseButtonEvent, ExitEvent
     from svgrenderengine.engine.query import find_all_clickable_elements_at
+    from jinja2 import Template
 
     import xml.etree.ElementTree as ET
     import random
@@ -12,28 +13,25 @@ if __name__ == "__main__":
         return color_hex
 
     ENGINE_NAMESPACE = 'xmlns:svgre="svg_render_engine"'
-    WIDTH = 640
-    HEIGHT = 480
 
-    svg_code = f"""
-    <svg width="{WIDTH}" height="{HEIGHT}" xmlns="http://www.w3.org/2000/svg" {ENGINE_NAMESPACE}>
-    <!-- A clickable rectangle with optimized speed -->
-    <rect x="10" y="10" width="50" height="50" fill="red" id="myrect" svgre:clickable="true"/>
-    <!-- A circle with crisp edges -->
-    <circle cx="50" cy="50" r="40" fill="green" id="mycircle"  svgre:clickable="true"/>
-    </svg>"""
+    with open("./test/matb2.svg", "r") as svg_file:
+        svg_code = Template(svg_file.read()).render()
+
     element_tree_root = ET.fromstring(svg_code)
+    width = int(element_tree_root.get("width"))
+    height = int(element_tree_root.get("height"))
+    print(width, height)
 
-    game = PygameView(width=WIDTH, height=HEIGHT)
-
+    game = PygameView(width=width, height=height)
+    # run the simulation loop
     running = True
     while running:
         for event in game.step():
             if isinstance(event, MouseButtonEvent) and event.status == "pressed":
-                print(event)
                 elements = find_all_clickable_elements_at(
                     element_tree_root, event.position
                 )
+                print(event, elements)
                 for elem in elements:
                     elem.set("fill", get_random_color())
             elif isinstance(event, ExitEvent):

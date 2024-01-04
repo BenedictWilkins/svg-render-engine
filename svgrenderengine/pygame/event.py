@@ -4,6 +4,7 @@ from svgrenderengine.event import (
     MouseButtonEvent,
     MouseMotionEvent,
     KeyEvent,
+    ExitEvent,
     Event,
     KEY_RELEASED,
     KEY_PRESSED,
@@ -14,6 +15,11 @@ PYGAME_KEYUP = pygame.KEYUP
 
 
 class _EventFactory:
+    @staticmethod
+    def create_exit_event_from_pygame_event(pg_event):
+        assert pg_event.type == pygame.QUIT
+        return ExitEvent(Event.create_new_event())
+
     @staticmethod
     def create_key_event_from_pygame_event(pg_event):
         """Creates a KeyEvent instance from a Pygame keyboard event.
