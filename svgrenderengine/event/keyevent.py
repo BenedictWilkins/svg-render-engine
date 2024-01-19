@@ -8,18 +8,18 @@ KEY_RELEASED = "released"
 
 
 @dataclass
-class KeyEvent:
+class KeyEvent(Event):
 
-    """A class representing a keyboard event, composed of a general event.
+    """A class representing a keyboard event.
 
     Attributes:
-        event (Event): The event associated with this keyboard event.
+        id (str): A unique identifier for the event, represented as a string (inherited).
+        timestamp (float): The UNIX timestamp (in seconds) when the event instance is created (inherited).
         key (int): The key code of the keyboard event.
         key_name (str): The name of the key pressed or released.
         status (str): The status of the key event ('pressed', 'released').
     """
 
-    event: Event
     key: int
     key_name: str
     status: str

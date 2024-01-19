@@ -4,7 +4,7 @@ from .event import Event
 from .keyevent import KeyEvent, KEY_PRESSED, KEY_RELEASED
 from .mouseevent import MouseButtonEvent, MouseMotionEvent
 from .exitevent import ExitEvent
-from .queryevent import QueryEvent
+from .queryevent import QueryEvent, QuerySVGEvent
 from .responseevent import ResponseEvent
 
 __all__ = (
@@ -14,5 +14,6 @@ __all__ = (
     "MouseMotionEvent",
     "ExitEvent",
     "QueryEvent",
+    "QuerySVGEvent",
     "ResponseEvent",
 )

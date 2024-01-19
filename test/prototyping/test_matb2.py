@@ -1,6 +1,6 @@
 if __name__ == "__main__":
     from svgrenderengine.pygame import PygameView
-    from svgrenderengine.event import MouseButtonEvent, ExitEvent, QueryEvent, Event
+    from svgrenderengine.event import MouseButtonEvent, ExitEvent, QuerySVGEvent, Event
     from svgrenderengine.engine.query import find_all_clickable_elements_at
     from svgrenderengine.engine import SVGApplication
 
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     while running:
         for event in game.step():
             result = app.query(
-                QueryEvent(Event.create_event(), QueryEvent.SELECT, "root", ["_xml"])
+                QuerySVGEvent(*Event.new(), QuerySVGEvent.SELECT, "root", ["_xml"])
             )
             # print(result)
 
@@ -34,7 +34,7 @@ if __name__ == "__main__":
                     # Test Update
                     # result = app.query(
                     #     QueryEvent(
-                    #         Event.create_event(),
+                    #         *Event.new(),
                     #         QueryEvent.UPDATE,
                     #         element_id,
                     #         dict(fill=get_random_color()),
@@ -44,7 +44,7 @@ if __name__ == "__main__":
                     # Test DELETE
                     # result = app.query(
                     #     QueryEvent(
-                    #         Event.create_event(),
+                    #         *Event.new(),
                     #         QueryEvent.DELETE,
                     #         element_id,
                     #         None,
@@ -53,14 +53,13 @@ if __name__ == "__main__":
 
                     # Test SELECT
                     result = app.query(
-                        QueryEvent(
-                            Event.create_event(),
-                            QueryEvent.SELECT,
+                        QuerySVGEvent(
+                            *Event.new(),
+                            QuerySVGEvent.SELECT,
                             element_id,
                             ["id", "fill", "abc"],
                         )
                     )
-
                     print(result)
 
             elif isinstance(event, ExitEvent):

@@ -5,12 +5,11 @@ from .event import Event  # Assuming Event class is defined in the 'event' modul
 
 
 @dataclass
-class ExitEvent:
+class ExitEvent(Event):
 
-    """A class representing a program exit event, composed of a general event.
+    """A class representing a program exit event.
 
     Attributes:
-        event (Event): The event associated with this keyboard event.
+        id (str): A unique identifier for the event, represented as a string (inherited).
+        timestamp (float): The UNIX timestamp (in seconds) when the event instance is created (inherited).
     """
-
-    event: Event

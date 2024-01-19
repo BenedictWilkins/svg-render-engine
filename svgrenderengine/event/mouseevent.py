@@ -8,18 +8,18 @@ __all__ = ("MouseButtonEvent", "MouseMotionEvent")
 
 
 @dataclass
-class MouseButtonEvent:
+class MouseButtonEvent(Event):
     """
-    A class representing a mouse event, composed of a general event.
+    A class representing a mouse event.
 
     Attributes:
-        event (Event): The general event associated with this mouse event.
+        id (str): A unique identifier for the event, represented as a string (inherited).
+        timestamp (float): The UNIX timestamp (in seconds) when the event instance is created (inherited).
         button (int): The mouse button involved in the event (1 for left click, 2 for middle click, 3 for right click, etc.).
         position (tuple): The (x, y) coordinates of the mouse event.
         status (str): The status of the mouse event ('pressed', 'released').
     """
 
-    event: Event
     button: int
     position: tuple
     status: str
@@ -27,16 +27,15 @@ class MouseButtonEvent:
 
 
 @dataclass
-class MouseMotionEvent:
+class MouseMotionEvent(Event):
     """
-    A class representing a mouse moition event, composed of a general event.
+    A class representing a mouse moition event.
 
     Attributes:
-        event (Event): The general event associated with this mouse motion.
-        position (tuple): The (x, y) coordinates of the mouse event.
+        id (str): A unique identifier for the event, represented as a string (inherited).
+        timestamp (float): The UNIX timestamp (in seconds) when the event instance is created (inherited).        position (tuple): The (x, y) coordinates of the mouse event.
         relative (tuple): The relative motion of the mouse since the last event.
     """
 
-    event: Event
     position: tuple
     relative: tuple

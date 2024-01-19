@@ -1,5 +1,6 @@
 from .query import *
-from .app import SVGApplication
+from .svgapp import SVGApplication
+from .templatedapp import TemplatedSVGApplication
 
 ENGINE_NAMESPACE = 'xmlns:svgre="svg_render_engine"'
 
